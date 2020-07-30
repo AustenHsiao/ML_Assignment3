@@ -68,7 +68,6 @@ def naive_bayes(trainingFile, testFile):
             total += len(classes)
             classProbability.append(len(classes))
         classProbability = list(map(lambda x: x/total, classProbability))
-
         ######################## Using test set below ###############################
         print("\n\n_____TEST SET DATA_____\n\n")
         objectID = 1 
@@ -103,7 +102,7 @@ def naive_bayes(trainingFile, testFile):
                 acc = 0
             if acc > 0:
                 accuracyHit += 1
-            print("ID=%5d, predicted=%3d, probability = %.4f, true=%3d, accuracy=%4.2f" % (objectID, prediction, probability, test[-1], acc))
+            #print("ID=%5d, predicted=%3d, probability = %.4f, true=%3d, accuracy=%4.2f" % (objectID, prediction, probability, test[-1], acc))
             objectID += 1
 
         print(len(testData))
