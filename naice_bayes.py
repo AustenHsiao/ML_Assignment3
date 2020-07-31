@@ -110,7 +110,7 @@ def run_test_data(testData, classProbability, average, standardDev, dictionary):
             pdfs.append(probabilitiesCurrentClass)  # add each line of probabilities (pdfs, rather) to pdfs. With the way I've set up the for-loops,
                                                     # pdfs[0] will contain the list of probabilities for each feature given class 0
         
-        product = [np.prod(prob)*classprob for prob, classprob in zip(pdfs,classProbability)] # for each list, calculate the product
+        product = [np.prod(prob)*classprob for prob, classprob in zip(pdfs,classProbability)] # for each list, calculate the product of all pdfs
         predictedClassIndex = product.index(max(product)) # still need to look up what class label the actual index is associated with
         duplicateIndices = [index for index, value in zip(enumerate(product), product) if value == max(product)] # iterate through the product list 
                                                                                                                  #(with the final calculations for each class) to check for duplicates
@@ -127,7 +127,7 @@ def run_test_data(testData, classProbability, average, standardDev, dictionary):
         elif len(duplicateIndices) > 1 and GetKey(int(test[-1]), dictionary) not in duplicateIndices:
             accuracy = 0
 
-        # if the accuracy is anything bigger than 0, we have a match and we'll at it to the hits.
+        # if the accuracy is anything bigger than 0, we have a match and we'll add it to the hits.
         if accuracy > 0:
             hit += accuracy
 
