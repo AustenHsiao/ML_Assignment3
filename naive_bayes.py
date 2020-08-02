@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import statistics as stat
 import math
+import os
 
 # opens file by file name. sort=1 will sort the file by the value in the last column (class id)
 def open_file(file, sort=0):
@@ -106,11 +107,18 @@ def run_test_data(testData, classProbability, average, standardDev, dictionary):
                 std = standardDev[classNum][featureNum] # pulling the stdev out of the matrix
                 x = test[featureNum] # input
                 p = pdf(ave, std, x) # pdf() returns the pdf for a given average, stdev, and input
+                if p == 0:                  
+                    p = -math.inf
+                else:
+                    p = math.log(p)
                 probabilitiesCurrentClass.append(p) 
             pdfs.append(probabilitiesCurrentClass)  # add each line of probabilities (pdfs, rather) to pdfs. With the way I've set up the for-loops,
                                                     # pdfs[0] will contain the list of probabilities for each feature given class 0
         
-        product = [np.prod(prob)*classprob for prob, classprob in zip(pdfs,classProbability)] # for each list, calculate the product of all pdfs
+        #product = [np.prod(prob)*classprob for prob, classprob in zip(pdfs,classProbability)] # for each list, calculate the product of all pdfs
+        # The above line is commented out because I original did not take the natural logs of each value. 
+
+        product = [sum(prob) + math.log(classprob) for prob, classprob in zip(pdfs, classProbability)]
         predictedClassIndex = product.index(max(product)) # still need to look up what class label the actual index is associated with
         duplicateIndices = [index for index, value in zip(enumerate(product), product) if value == max(product)] # iterate through the product list 
                                                                                                                  #(with the final calculations for each class) to check for duplicates
@@ -154,6 +162,7 @@ def naive_bayes(trainingFile, testFile):
 if __name__ == '__main__':
     ## Uncomment the one to run. or load a new one in with a new line
 
+    os.chdir('C:\\Users\\Austen\\Desktop\\Sourcefiles\\Python\\Assignment3')
     #naive_bayes('pendigits_training.txt', 'pendigits_test.txt')
     #naive_bayes('satellite_training.txt', 'satellite_test.txt')
     naive_bayes('yeast_training.txt', 'yeast_test.txt')
